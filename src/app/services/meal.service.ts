@@ -1,30 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Meal } from '../models/meal';
+import { meals } from '../data/meal'
 import { FoodCategory } from '../models/food';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MealService {
-
-  meals: Meal[] = 
-  [
-    {
-      name: 'pasta bolo',
-      neededFood: ['pasta', 'tomate frito'],
-      optionalFood: ['cebolla', 'pimiento', 'zanahoria']
-    },
-    {
-      name: 'arroz cubana',
-      neededFood: ['arroz', 'tomate frito', 'huevo'],
-      optionalFood: ['cebolla', 'pimiento', 'zanahoria']
-    },
-    {
-      name: 'curry',
-      neededFood: ['arroz', 'leche coco', 'zanahoria'],
-      optionalFood: ['cebolla', 'pimiento']
-    }
-  ];
 
   mealsToShow: Meal[] = [];
   availableFood: string[] = [];
@@ -45,7 +27,7 @@ export class MealService {
 
     let haveAllneededFood = true;
 
-    for (const meal of this.meals) {
+    for (const meal of meals) {
 
       haveAllneededFood = true;
 

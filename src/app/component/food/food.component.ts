@@ -18,17 +18,32 @@ constructor(private _foodService: FoodService,
             private _router: Router
             ){}
   
-ngOnInit(): void {
-  this.loadFoodCategory();
+async ngOnInit() {
+  //this.loadFoodCategory();
+  this.loadJson();
 }
 
 loadFoodCategory(){
-  this.foodCategory = this._foodService.getFoodCategory();
+  this._foodService.getFoodCategory()
+    .subscribe({
+      next: (res: FoodCategory[]) => this.foodCategory = res,
+      error: res => console.log(res)
+    })
+}
+
+async loadJson(){
+  this.foodCategory = await this._foodService.getJson()
 }
 
 cook(){
   this._mealService.setAvailableFood(this.foodCategory);
   this._router.navigate(['meal']);
+}
+
+add(){
+  this.foodCategory.push({name: "queso", food: [{name: 'gouda', selected: true}]})
+  console.log("aaa")
+  this._foodService.saveData(this.foodCategory);
 }
 
 }

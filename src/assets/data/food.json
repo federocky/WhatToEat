@@ -1,0 +1,23 @@
+[
+  {
+    "name": "verduras",
+    "food": [
+      { "name": "cebolla", "selected": true },
+      { "name": "zanahoria", "selected": true }
+    ]
+  },
+  {
+    "name": "pasta-arroz",
+    "food": [
+      { "name": "pasta", "selected": true },
+      { "name": "arroz", "selected": true }
+    ]
+  },
+  {
+    "name": "salsas",
+    "food": [
+      { "name": "tomate frito", "selected": true },
+      { "name": "tomate triturado", "selected": true }
+    ]
+  }
+]
