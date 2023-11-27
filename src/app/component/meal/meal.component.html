@@ -1,14 +1,5 @@
 <ion-content>
 
-<ion-card  *ngFor="let meal of meals">
-    <ion-card-header>
-      <ion-card-title>{{ meal.name }}</ion-card-title>
-      <ion-card-subtitle>Información de este alimento</ion-card-subtitle>
-    </ion-card-header>
-    
-    <ion-card-content>
-      Here's a small text description for the card content. Nothing more, nothing less.
-    </ion-card-content>
-  </ion-card>
+  <app-meal-cards [meals]="meals"></app-meal-cards>
 
 </ion-content>

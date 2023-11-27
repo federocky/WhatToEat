@@ -1,33 +1,48 @@
 import { Injectable } from '@angular/core';
 import { Meal } from '../models/meal';
-import { meals } from '../data/meal'
 import { FoodCategory } from '../models/food';
+import { Storage } from '@ionic/storage-angular';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MealService {
 
-  mealsToShow: Meal[] = [];
+  private mealUrl = 'assets/data/meal.json';
   availableFood: string[] = [];
+  meals: Meal[] = [];
 
-  constructor() { }
+  constructor(private storage: Storage,
+    private http: HttpClient) { 
+    this.loadAllMeals();
+  }
 
-  setAvailableFood(foodCategory: FoodCategory[]){
+  private async loadAllMeals() {
+    this.http.get<Meal[]>(this.mealUrl)
+    .subscribe({
+      next: (res: Meal[]) => {
+        this.meals = res;
+      },
+      error: err => console.log(err)
+    })
+  }
 
-    for (const category of foodCategory) {
+  setAvailableFood(foodList: FoodCategory[]){
+
+    for (const category of foodList) {
       category.food.forEach(food => {
         if(food.selected) this.availableFood.push(food.name);
       });
     }
   }
 
-  prepareMeals(){
-    this.mealsToShow.splice(0, this.mealsToShow.length);
+  cook(): Meal[] {
+    let cookedMeals: Meal[] = [];
 
     let haveAllneededFood = true;
 
-    for (const meal of meals) {
+    for (const meal of this.meals) {
 
       haveAllneededFood = true;
 
@@ -35,12 +50,18 @@ export class MealService {
         if(!this.availableFood.includes(neededFood)) haveAllneededFood = false;
       }
 
-      if(haveAllneededFood) this.mealsToShow.push(meal);
+      if(haveAllneededFood) cookedMeals.push(meal);
     }
+
+    return cookedMeals;
   } 
 
-  getMealsToShow(){
-    return this.mealsToShow;
+  // getMealsToShow(){
+  //   return this.mealsToShow;
+  // }
+
+  getMeals(){
+    return this.meals;
   }
 
 }

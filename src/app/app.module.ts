@@ -9,13 +9,21 @@ import { FoodComponent } from './component/food/food.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { IonicStorageModule } from '@ionic/storage-angular';
+import { CookedMealsComponent } from './component/cooked-meals/cooked-meals.component';
+import { MealCardsComponent } from './component/shared/meal-cards/meal-cards.component';
+import { FoodAddComponent } from './component/food-add/food-add.component';
+import { MealAddComponent } from './component/meal-add/meal-add.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     MealComponent,
-    FoodComponent
+    FoodComponent,
+    CookedMealsComponent,
+    MealCardsComponent,
+    FoodAddComponent,
+    MealAddComponent
   ],
   imports: [
     BrowserModule,

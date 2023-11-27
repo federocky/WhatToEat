@@ -15,9 +15,7 @@ export class MealComponent {
   }
 
   ionViewWillEnter() {
-    console.log('estoy en oniti')
-    this._mealService.prepareMeals();
-    this.meals = this._mealService.getMealsToShow();
+    this.meals = this._mealService.getMeals();
   }
 
 }

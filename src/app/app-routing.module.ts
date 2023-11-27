@@ -2,6 +2,9 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { FoodComponent } from './component/food/food.component';
 import { MealComponent } from './component/meal/meal.component';
+import { CookedMealsComponent } from './component/cooked-meals/cooked-meals.component';
+import { FoodAddComponent } from './component/food-add/food-add.component';
+import { MealAddComponent } from './component/meal-add/meal-add.component';
 
 const routes: Routes = [
   {
@@ -16,7 +19,20 @@ const routes: Routes = [
   {
     path: 'meal',
     component: MealComponent
+  },
+  {
+    path: 'cookead-meal',
+    component: CookedMealsComponent
+  },
+  {
+    path: 'food-add',
+    component: FoodAddComponent
+  },
+  {
+    path: 'meal-add',
+    component: MealAddComponent
   }
+  
 ];
 
 @NgModule({
