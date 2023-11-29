@@ -14,7 +14,15 @@ export class CookedMealsComponent {
   constructor(private _mealService: MealService){
   }
 
-  ionViewWillEnter() {
-    this.cookedMeals = this._mealService.cook();
+  async ionViewWillEnter() {
+    await this.loadMeals();
+  }
+
+  async loadMeals(){
+    this._mealService.cook().then((meals) => {
+      this.cookedMeals = meals || [];
+    }).catch((error) => {
+      console.error('Error al cocinar:', error);
+    });
   }
 }

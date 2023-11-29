@@ -2,4 +2,10 @@
 
   <app-meal-cards [meals]="meals"></app-meal-cards>
 
+  <ion-fab slot="fixed" horizontal="center" vertical="bottom">
+    <ion-fab-button (click)="add()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
 </ion-content>

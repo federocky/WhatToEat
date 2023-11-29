@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { FoodCategory } from '../models/food';
-import { Storage } from '@ionic/storage-angular';
+import { Food, FoodCategory } from '../models/food';
+import { Firestore, collection, addDoc, collectionData, doc, deleteDoc, arrayUnion, updateDoc } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
 
 
 @Injectable({
@@ -9,65 +9,58 @@ import { Storage } from '@ionic/storage-angular';
 })
 export class FoodService {
 
-  private foodCategoryUrl = 'assets/data/food.json';
-  allFood: FoodCategory[] = [];
+  constructor(private firestore: Firestore) {}
 
+  addCategory(categoryName: string){
+    const foodRef = collection(this.firestore, 'food');
 
-  constructor(private storage: Storage,
-              private http: HttpClient) {
-     this.loadAllFood();
-  }
-
-  private loadAllFood() {
-    this.http.get<FoodCategory[]>(this.foodCategoryUrl)
-    .subscribe({
-      next: (res: FoodCategory[]) => {
-        this.allFood = res;
-      },
-      error: err => console.log(err)
-    })
+    let foodCat: FoodCategory = {
+      id: '',
+      name: categoryName,
+      food: []
+    }
+    addDoc(foodRef, foodCat);
   }
 
   addFood(category: string, foodName: string){
-    let foodCategory = this.allFood.find(cat => cat.name = category);
 
-    if(foodCategory == undefined) return;
+    let allFood: FoodCategory[];
 
-    foodCategory.food.push({name: foodName, selected: false})
-    
-    this.saveData(this.allFood);
+    this.getAllFood()
+      .subscribe((allFoodResult) => {
+        
+        allFood = allFoodResult;
+
+        let foodCategory = allFood.find(cat => cat.name = category);
+        if(foodCategory == undefined) return;
+
+        const foodToAdd: Food = {name: foodName, selected: false};
+        
+        this.addFoodToCategory(foodCategory.id, foodToAdd);
+        
+      });     
   }
 
+  private addFoodToCategory(categoryId: string, food: Food): Promise<void> {
+    const foodCollection = collection(this.firestore, 'food');
+
+    const foodDoc = doc(foodCollection, categoryId);
+
+    const updatedFoodData = {
+      food: arrayUnion(food)
+    };
+
+    return updateDoc(foodDoc, updatedFoodData);
+  }
   
-  getFood(){
-    console.log("llamo a getFood")
-    console.log(this.allFood)
-    return this.allFood;
+  getAllFood(): Observable<FoodCategory[]>{
+    const foodRef = collection(this.firestore, 'food');
+    return collectionData(foodRef, { idField: 'id' }) as Observable<FoodCategory[]>
   }
-              
-  // async getJson() {
-  //   await this.storage.create();
-
-  //   if (this.jsonData.length === 0) {
-  //     // Si el JSON aún no está cargado, intenta cargarlo desde el almacenamiento local
-  //     this.jsonData = (await this.storage.get('food')) || [];
-
-  //     // Si aún no hay datos, inicializa el JSON con algún valor predeterminado
-  //     if (this.jsonData.length === 0) {
-  //       this.jsonData = this.getDefaultData();
-  //       this.saveData(this.jsonData);
-  //     }
-
-  //     return this.jsonData
-  //   }
-
-  //   return this.jsonData;
+          
+  // deleteFood(foodCategoryId: number){
+  //   const foodRef = doc(this.firestore, `food/${foodCategoryId}`);
+  //   return deleteDoc(foodRef);
   // }
-
-  async saveData(data: FoodCategory[]) {
-    await this.storage.create();
-    await this.storage.set('food', data);
-  }
-
   
 }

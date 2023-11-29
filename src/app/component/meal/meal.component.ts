@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Meal } from 'src/app/models/meal';
 import { MealService } from 'src/app/services/meal.service';
 
@@ -7,15 +8,24 @@ import { MealService } from 'src/app/services/meal.service';
   templateUrl: './meal.component.html',
   styleUrls: ['./meal.component.scss']
 })
-export class MealComponent {
+export class MealComponent implements OnInit{
 
   meals: Meal[] = [];
 
-  constructor(private _mealService: MealService){
+  constructor(private _mealService: MealService,
+              private _router: Router){
   }
 
-  ionViewWillEnter() {
-    this.meals = this._mealService.getMeals();
+  ngOnInit() {
+    this.getAllMeals();
+  }
+  
+  private getAllMeals(){
+    this._mealService.getAllMeals()
+      .subscribe( mealsResult => this.meals = mealsResult);
   }
 
+  add(){
+    this._router.navigate(['meal-add']);
+  }
 }

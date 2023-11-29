@@ -1,1 +1,28 @@
-<p>meal-add works!</p>
+<ion-list>
+    <ion-item>
+        <ion-input aria-label="name" placeholder="Nombre" [(ngModel)]="mealName"></ion-input>
+    </ion-item>
+
+    <ion-item>
+        <ion-label position="stacked">Alimentos Necesarios</ion-label>
+        <ion-chip *ngFor="let food of neededFood" (click)="removeFood('neededFood', food)">
+          {{ food }}
+          <ion-icon name="close-circle"></ion-icon>
+        </ion-chip>
+        <ion-input aria-label="newNeededFood" placeholder="Añadir alimentos necesarios" [(ngModel)]="newNeededFood" (ionChange)="addFood('neededFood', newNeededFood)"></ion-input>
+      </ion-item>
+    
+      <ion-item>
+        <ion-label position="stacked">Alimentos Opcionales</ion-label>
+        <ion-chip *ngFor="let food of optionalFood" (click)="removeFood('optionalFood', food)">
+          {{ food }}
+          <ion-icon name="close-circle"></ion-icon>
+        </ion-chip>
+        <ion-input aria-label="newOptionalFood" placeholder="Añadir alimentos opcionales" [(ngModel)]="newOptionalFood" (ionChange)="addFood('optionalFood', newOptionalFood)"></ion-input>
+      </ion-item>
+</ion-list>
+<ion-fab slot="fixed" horizontal="center" vertical="bottom">
+    <ion-fab-button (click)="add()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+</ion-fab>

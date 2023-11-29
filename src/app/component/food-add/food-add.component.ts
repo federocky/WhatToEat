@@ -1,22 +1,32 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FoodCategory } from 'src/app/models/food';
 import { FoodService } from 'src/app/services/food.service';
+import { IonModal } from '@ionic/angular';
+import { OverlayEventDetail } from '@ionic/core/components';
+
 
 @Component({
   selector: 'app-food-add',
   templateUrl: './food-add.component.html',
   styleUrls: ['./food-add.component.scss']
 })
-export class FoodAddComponent {
+export class FoodAddComponent implements OnInit {
+  @ViewChild(IonModal) modal!: IonModal;
 
   categoryList: FoodCategory[] = [];
   foodName: string = '';
   selectedCategory: string = '';
+  categoryName:string = '';
 
   constructor(private _foodService: FoodService){}
 
-  ionViewWillEnter (){
-    this.categoryList = this._foodService.getFood();
+  ngOnInit (){
+    this.getAllFood();
+  }
+
+  private getAllFood(){
+    this._foodService.getAllFood()
+      .subscribe( allFood => this.categoryList = allFood);
   }
 
   add(){
@@ -25,5 +35,20 @@ export class FoodAddComponent {
 
   onCategoryChange(event: any) {
     this.selectedCategory = event.detail.value;
+  }
+
+
+  //TODO: move modal to a component
+  onModalCancel() {
+    this.modal.dismiss(null, 'cancel');
+  }
+
+  onModalConfirm() {
+    this._foodService.addCategory(this.categoryName);
+    this.modal.dismiss(null, 'confirm');
+  }
+
+  onWillDismiss(event: Event) {
+    const ev = event as CustomEvent<OverlayEventDetail<string>>;
   }
 }

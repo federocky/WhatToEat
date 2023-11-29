@@ -1,31 +1,21 @@
 import { Injectable } from '@angular/core';
 import { Meal } from '../models/meal';
 import { FoodCategory } from '../models/food';
-import { Storage } from '@ionic/storage-angular';
-import { HttpClient } from '@angular/common/http';
+import { Firestore, collection, addDoc, collectionData, doc, deleteDoc, arrayUnion, updateDoc } from '@angular/fire/firestore';
+import { Observable, first, map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MealService {
 
-  private mealUrl = 'assets/data/meal.json';
   availableFood: string[] = [];
-  meals: Meal[] = [];
 
-  constructor(private storage: Storage,
-    private http: HttpClient) { 
-    this.loadAllMeals();
-  }
+  constructor(private firestore: Firestore) { }
 
-  private async loadAllMeals() {
-    this.http.get<Meal[]>(this.mealUrl)
-    .subscribe({
-      next: (res: Meal[]) => {
-        this.meals = res;
-      },
-      error: err => console.log(err)
-    })
+  addMeal(meal: Meal){
+    const mealRef = collection(this.firestore, 'meal');
+    addDoc(mealRef, meal);
   }
 
   setAvailableFood(foodList: FoodCategory[]){
@@ -37,31 +27,60 @@ export class MealService {
     }
   }
 
-  cook(): Meal[] {
-    let cookedMeals: Meal[] = [];
+  // cook() {
+  //   let cookedMeals: Meal[] = [];
 
-    let haveAllneededFood = true;
+  //   let haveAllneededFood = true;
 
-    for (const meal of this.meals) {
+  //   let allMeals: Meal[] = [];
+    
+  //   this.getAllMeals()
+  //     .subscribe((allMealsResult) => {
+        
+  //       allMeals = allMealsResult;
 
-      haveAllneededFood = true;
+  //       for (const meal of allMeals) {
+    
+  //         haveAllneededFood = true;
+    
+  //         for (const neededFood of meal.neededFood) {
+  //           if(!this.availableFood.includes(neededFood)) haveAllneededFood = false;
+  //         }
+    
+  //         if(haveAllneededFood) cookedMeals.push(meal);
+  //       }
+    
+  //       return cookedMeals;
+  //     });
+  // } 
 
-      for (const neededFood of meal.neededFood) {
-        if(!this.availableFood.includes(neededFood)) haveAllneededFood = false;
-      }
-
-      if(haveAllneededFood) cookedMeals.push(meal);
+  async cook(){
+    try {
+      const allMeals = await this.getAllMeals()
+        .pipe(
+          first(),
+          map((meals) => {
+            return meals.filter(meal =>
+              meal.neededFood.every(food =>
+                this.availableFood.some(availableFood =>
+                  availableFood.toLowerCase() === food.toLowerCase()
+                )
+              )
+            );
+          })
+        )
+        .toPromise();
+  
+      return allMeals;
+    } catch (error) {
+      console.error('Error getting meals:', error);
+      return [];
     }
+  }
 
-    return cookedMeals;
-  } 
-
-  // getMealsToShow(){
-  //   return this.mealsToShow;
-  // }
-
-  getMeals(){
-    return this.meals;
+  getAllMeals(): Observable<Meal[]>{
+    const foodRef = collection(this.firestore, 'meal');
+    return collectionData(foodRef, { idField: 'id' }) as Observable<Meal[]>  
   }
 
 }

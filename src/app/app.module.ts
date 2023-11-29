@@ -13,7 +13,9 @@ import { CookedMealsComponent } from './component/cooked-meals/cooked-meals.comp
 import { MealCardsComponent } from './component/shared/meal-cards/meal-cards.component';
 import { FoodAddComponent } from './component/food-add/food-add.component';
 import { MealAddComponent } from './component/meal-add/meal-add.component';
-
+import { environment } from 'src/environments/environment';
+import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
+import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 
 @NgModule({
   declarations: [
@@ -31,7 +33,10 @@ import { MealAddComponent } from './component/meal-add/meal-add.component';
     IonicModule.forRoot(),
     FormsModule,
     HttpClientModule,
-    IonicStorageModule.forRoot()
+    IonicStorageModule.forRoot(),
+    provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
+    provideFirestore(() => getFirestore()),
+    
   ],
   providers: [],
   bootstrap: [AppComponent]
