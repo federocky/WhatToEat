@@ -31,7 +31,7 @@ export class FoodService {
         
         allFood = allFoodResult;
 
-        let foodCategory = allFood.find(cat => cat.name = category);
+        let foodCategory = allFood.find(cat => cat.name == category);
         if(foodCategory == undefined) return;
 
         const foodToAdd: Food = {name: foodName, selected: false};
