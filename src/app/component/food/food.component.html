@@ -1,3 +1,5 @@
+<ion-content>
+
 <ion-list>
     <ng-container *ngFor="let category of foodList">      
         <ion-item-group>
@@ -10,6 +12,7 @@
         </ion-item-group>
     </ng-container>
 </ion-list>
+</ion-content>
 
 <ion-fab vertical="bottom" horizontal="center" slot="fixed">
     <ion-fab-button (click)="add()">
