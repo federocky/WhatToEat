@@ -1,24 +1,24 @@
 <ion-content>
 
-<ion-list>
-    <ng-container *ngFor="let category of foodList">      
-        <ion-item-group>
-            <ion-item-divider>{{ category.name }}</ion-item-divider>
+    <ion-list>
+        <ng-container *ngFor="let category of foodList | orderBy: 'name'">      
+            <ion-item-group>
+                <ion-item-divider>{{ category.name }}</ion-item-divider>
 
-            <ion-item *ngFor="let food of category.food">
-            <ion-label></ion-label>
-            <ion-checkbox [(ngModel)]="food.selected">{{ food.name }}</ion-checkbox>
-            </ion-item>     
-        </ion-item-group>
-    </ng-container>
-</ion-list>
+                <ion-item *ngFor="let food of category.food | orderBy: 'name'">
+                <ion-label></ion-label>
+                <ion-checkbox [(ngModel)]="food.selected">{{ food.name }}</ion-checkbox>
+                </ion-item>     
+            </ion-item-group>
+        </ng-container>
+    </ion-list>
+
+    <ion-fab vertical="bottom" horizontal="center" slot="fixed">
+        <ion-fab-button (click)="add()">
+            <ion-icon name="add"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
 </ion-content>
-
-<ion-fab vertical="bottom" horizontal="center" slot="fixed">
-    <ion-fab-button (click)="add()">
-      <ion-icon name="add"></ion-icon>
-    </ion-fab-button>
-</ion-fab>
-<ion-button (click)="cook()">A cocinar</ion-button> 
+    <ion-button (click)="cook()">A cocinar</ion-button> 
 
 
