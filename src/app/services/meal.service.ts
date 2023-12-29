@@ -27,32 +27,6 @@ export class MealService {
     }
   }
 
-  // cook() {
-  //   let cookedMeals: Meal[] = [];
-
-  //   let haveAllneededFood = true;
-
-  //   let allMeals: Meal[] = [];
-    
-  //   this.getAllMeals()
-  //     .subscribe((allMealsResult) => {
-        
-  //       allMeals = allMealsResult;
-
-  //       for (const meal of allMeals) {
-    
-  //         haveAllneededFood = true;
-    
-  //         for (const neededFood of meal.neededFood) {
-  //           if(!this.availableFood.includes(neededFood)) haveAllneededFood = false;
-  //         }
-    
-  //         if(haveAllneededFood) cookedMeals.push(meal);
-  //       }
-    
-  //       return cookedMeals;
-  //     });
-  // } 
 
   async cook(){
     try {
