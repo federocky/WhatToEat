@@ -5,6 +5,7 @@ import { MealComponent } from './component/meal/meal.component';
 import { CookedMealsComponent } from './component/cooked-meals/cooked-meals.component';
 import { FoodAddComponent } from './component/food/food-add/food-add.component';
 import { MealAddComponent } from './component/meal/meal-add/meal-add.component';
+import { MealDetailComponent } from './component/shared/meal-cards/meal-detail/meal-detail.component';
 
 const routes: Routes = [
   {
@@ -31,6 +32,10 @@ const routes: Routes = [
   {
     path: 'meal-add',
     component: MealAddComponent
+  },
+  {
+    path: 'meal-detail',
+    component: MealDetailComponent
   }
   
 ];

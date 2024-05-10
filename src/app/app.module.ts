@@ -17,7 +17,7 @@ import { environment } from 'src/environments/environment';
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { OrderByPipe } from './pipes/order-by.pipe';
-import { MealDetailComponent } from './component/meal/meal-detail/meal-detail.component';
+import { MealDetailComponent } from './component/shared/meal-cards/meal-detail/meal-detail.component';
 
 @NgModule({
   declarations: [

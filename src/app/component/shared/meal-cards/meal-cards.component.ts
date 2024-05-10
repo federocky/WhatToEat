@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Meal } from 'src/app/models/meal';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-meal-cards',
@@ -9,4 +10,11 @@ import { Meal } from 'src/app/models/meal';
 export class MealCardsComponent {
   @Input() meals: Meal[] = [];
 
+  constructor(private router: Router) {}
+
+  seeDetail(mealId: string){
+    const meal = this.meals.find(meal => meal.id === mealId);
+    this.router.navigate(['/meal-detail'], { state: { meal: meal } });
+
+  }
 }

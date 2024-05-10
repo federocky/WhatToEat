@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Meal } from '../models/meal';
 import { FoodCategory } from '../models/food';
-import { Firestore, collection, addDoc, collectionData, doc, deleteDoc, arrayUnion, updateDoc } from '@angular/fire/firestore';
+import { Firestore, collection, addDoc, collectionData, doc, deleteDoc, arrayUnion, updateDoc, docData } from '@angular/fire/firestore';
 import { Observable, first, map } from 'rxjs';
 
 @Injectable({
@@ -57,4 +57,13 @@ export class MealService {
     return collectionData(foodRef, { idField: 'id' }) as Observable<Meal[]>  
   }
 
+  getMealById(id: string): Observable<Meal> {
+    const mealDocRef = doc(this.firestore, 'meal', id);
+    return docData(mealDocRef).pipe(
+      map((mealData) => {
+        return { id, ...mealData } as Meal;
+      })
+    );
+  }
+  
 }

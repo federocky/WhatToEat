@@ -20,7 +20,15 @@
         </ion-chip>
         <ion-input aria-label="newOptionalFood" placeholder="Añadir alimentos opcionales" [(ngModel)]="newOptionalFood" (ionChange)="addFood('optionalFood', newOptionalFood)"></ion-input>
       </ion-item>
+
+      <ion-item lines="none">
+        <ion-label position="stacked">Receta</ion-label>
+        <ion-textarea aria-label="recipe" placeholder="Receta" [(ngModel)]="recipe" style="min-height: 50vh;"></ion-textarea>
+      </ion-item>
+    
+
 </ion-list>
+
 <ion-fab slot="fixed" horizontal="center" vertical="bottom">
     <ion-fab-button (click)="add()">
       <ion-icon name="checkmark-outline"></ion-icon>

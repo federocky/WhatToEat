@@ -1,1 +1,46 @@
-<p>meal-detail works!</p>
+<ion-content>
+    <!-- Imagen -->
+    <!-- <ion-img [src]="meal.imageUrl" alt="Imagen de la comida"></ion-img> -->
+  
+    <!-- Título -->
+    <ion-title>{{ meal.name }}</ion-title>
+  
+    <!-- Ingredientes necesarios -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Ingredientes Necesarios</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item>
+            {{ meal.neededFood.join(', ') }}
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+  
+    <!-- Ingredientes opcionales -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Ingredientes Opcionales</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item >
+            {{ meal.optionalFood.join(', ') }}
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+  
+    <!-- Receta -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Receta</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        {{ meal.recipe }}
+      </ion-card-content>
+    </ion-card>
+  </ion-content>
+  

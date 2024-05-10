@@ -1,6 +1,6 @@
 <ion-content>
 
-    <ion-card  *ngFor="let meal of meals | orderBy: 'name'">
+    <ion-card  *ngFor="let meal of meals | orderBy: 'name'" (click)="seeDetail(meal.id)">
         <ion-card-header>
           <ion-card-title>{{ meal.name }}</ion-card-title>
           <ion-card-subtitle><b>Necesario: </b> {{ meal.neededFood }}</ion-card-subtitle>
