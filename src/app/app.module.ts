@@ -11,12 +11,13 @@ import { HttpClientModule } from '@angular/common/http';
 import { IonicStorageModule } from '@ionic/storage-angular';
 import { CookedMealsComponent } from './component/cooked-meals/cooked-meals.component';
 import { MealCardsComponent } from './component/shared/meal-cards/meal-cards.component';
-import { FoodAddComponent } from './component/food-add/food-add.component';
-import { MealAddComponent } from './component/meal-add/meal-add.component';
+import { FoodAddComponent } from './component/food/food-add/food-add.component';
+import { MealAddComponent } from './component/meal/meal-add/meal-add.component';
 import { environment } from 'src/environments/environment';
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { OrderByPipe } from './pipes/order-by.pipe';
+import { MealDetailComponent } from './component/meal/meal-detail/meal-detail.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { OrderByPipe } from './pipes/order-by.pipe';
     MealCardsComponent,
     FoodAddComponent,
     MealAddComponent,
-    OrderByPipe
+    OrderByPipe,
+    MealDetailComponent
   ],
   imports: [
     BrowserModule,
