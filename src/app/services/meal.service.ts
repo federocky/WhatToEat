@@ -19,9 +19,9 @@ export class MealService {
               private mealRepository: MealRepository
               ) { }
 
-  addMeal(meal: Meal){
+  async addMeal(meal: Meal){
     const mealRef = collection(this.firestore, 'meal');
-    addDoc(mealRef, meal);
+    await addDoc(mealRef, meal);
   }
 
   async getAllMeals(): Promise<Meal[]>{

@@ -3,6 +3,7 @@ import { FoodCategory } from 'src/app/models/foodCategory';
 import { FoodService } from 'src/app/services/food.service';
 import { IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -18,7 +19,9 @@ export class FoodAddComponent implements OnInit {
   selectedCategory: string = '';
   categoryName:string = '';
 
-  constructor(private _foodService: FoodService){}
+  constructor(private _foodService: FoodService,
+              private _router: Router
+  ){}
 
   ngOnInit (){
     this.getAllFoodCategory();
@@ -28,8 +31,9 @@ export class FoodAddComponent implements OnInit {
     this.categoryList = await this._foodService.getAllFoodCategory();
   }
 
-  add(){
-    this._foodService.addFood(this.selectedCategory, this.foodName);
+  async add(){
+    await this._foodService.addFood(this.selectedCategory, this.foodName);
+    this._router.navigate(['food']);
   }
 
   onCategoryChange(event: any) {

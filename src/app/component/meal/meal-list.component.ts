@@ -7,7 +7,7 @@ import { MealService } from 'src/app/services/meal.service';
   selector: 'app-meal-list',
   templateUrl: './meal-list.component.html'
 })
-export class MealListComponent implements OnInit{
+export class MealListComponent {
 
   meals: Meal[] = [];
   filteredMeals: Meal[] = [];
@@ -17,10 +17,10 @@ export class MealListComponent implements OnInit{
               private _router: Router){
   }
 
-  ngOnInit() {
-    this.getAllMeals();
+  async ionViewWillEnter() {
+    await this.getAllMeals();
   }
-  
+
   private async getAllMeals(){
     const allMeals = await this._mealService.getAllMeals()
       this.meals = allMeals;

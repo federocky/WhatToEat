@@ -1,6 +1,4 @@
 import { Component } from '@angular/core';
-import { MealType } from 'src/app/enums/mealType';
-import { Meal } from 'src/app/models/meal';
 import { WeeklyMenu } from 'src/app/models/weeklyMenu';
 import { MealService } from 'src/app/services/meal.service';
 

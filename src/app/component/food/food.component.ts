@@ -9,35 +9,37 @@ import { MealService } from 'src/app/services/meal.service';
   templateUrl: './food.component.html',
   styleUrls: ['./food.component.scss']
 })
-export class FoodComponent implements OnInit{
+export class FoodComponent{
 
-foodCategoryList: FoodCategory[] = []
+  foodCategoryList: FoodCategory[] = []
 
-constructor(private _foodService: FoodService,
-            private _mealService: MealService,
-            private _router: Router
-            ){}
+  constructor(private _foodService: FoodService,
+              private _mealService: MealService,
+              private _router: Router
+              ){}
+    
+  async ionViewWillEnter() {
+    await this.getAllFoodCategory();
+  }
 
-ngOnInit (){
-  this.getAllFoodCategory();
-}
+  private async getAllFoodCategory(){
+    if(this.foodCategoryList.length === 0){
+      this.foodCategoryList = await this._foodService.getAllFoodCategory();
+    }
+  }
 
-private async getAllFoodCategory(){
-  this.foodCategoryList = await this._foodService.getAllFoodCategory();
-}
+  cookMeal(){
+    this._mealService.setAvailableFood(this.foodCategoryList);
+    this._router.navigate(['cookead-meal']);
+  }
 
-cookMeal(){
-  this._mealService.setAvailableFood(this.foodCategoryList);
-  this._router.navigate(['cookead-meal']);
-}
+  cookWeeklyMenu(){
+    this._mealService.setAvailableFood(this.foodCategoryList);
+    this._router.navigate(['weekly-menu']);
+  }
 
-cookWeeklyMenu(){
-  this._mealService.setAvailableFood(this.foodCategoryList);
-  this._router.navigate(['weekly-menu']);
-}
-
-async add(){
-  this._router.navigate(['food-add']);
-}
-
+  async add(){
+    this.foodCategoryList = [];
+    this._router.navigate(['food-add']);
+  }
 }

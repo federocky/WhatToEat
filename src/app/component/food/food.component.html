@@ -1,14 +1,13 @@
 <ion-content>
 
-    <ion-list>
+    <ion-list *ngIf="foodCategoryList.length > 0">
         <ng-container *ngFor="let category of foodCategoryList | orderBy: 'name'">      
             <ion-item-group>
                 <ion-item-divider>{{ category.name }}</ion-item-divider>
 
-                <ion-item *ngFor="let food of category.food | orderBy: 'name'">
-                <ion-label></ion-label>
-                <ion-checkbox [(ngModel)]="food.selected">{{ food.name }}</ion-checkbox>
-                </ion-item>     
+                    <ion-item *ngFor="let food of category.food | orderBy: 'name'">
+                        <ion-checkbox [(ngModel)]="food.selected">{{ food.name }}</ion-checkbox>
+                    </ion-item>     
             </ion-item-group>
         </ng-container>
     </ion-list>

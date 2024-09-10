@@ -5,6 +5,7 @@ import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { Capacitor } from '@capacitor/core';
 import { Storage, getDownloadURL, ref, uploadBytes } from '@angular/fire/storage'
 import { MealType } from 'src/app/enums/mealType';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -26,13 +27,16 @@ export class MealAddComponent implements OnInit {
   imageUrl: string = '';
   mealType: MealType = MealType.Any;
 
-  constructor(private storage: Storage,private _mealService: MealService){}
+  constructor(private storage: Storage,
+              private _mealService: MealService,
+              private _router: Router
+            ){}
 
   ngOnInit(): void {
     //Camera.requestPermissions();
   }
 
-  add(){      
+  async add(){      
     //TODO: refactor, this can be in the class
     const meal: Meal = {
       id: '',
@@ -44,7 +48,8 @@ export class MealAddComponent implements OnInit {
       mealType: this.mealType
     }
 
-    this._mealService.addMeal(meal);
+    await this._mealService.addMeal(meal);
+    this._router.navigate(['meal']);
   }
 
   checkPlatformForWeb(){

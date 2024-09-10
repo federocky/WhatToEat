@@ -33,8 +33,7 @@ export class FoodService {
 
     const foodToAdd: Food = {name: foodName, selected: false};
     
-    this.addFoodToCategory(foodCategory.id, foodToAdd);
-        
+    await this.addFoodToCategory(foodCategory.id, foodToAdd);        
   }
 
   async getAllFoodCategory(): Promise<FoodCategory[]>{
@@ -46,7 +45,7 @@ export class FoodService {
   //   return deleteDoc(foodRef);
   // }
 
-  private addFoodToCategory(categoryId: string, food: Food): Promise<void> {
+  private async addFoodToCategory(categoryId: string, food: Food): Promise<void> {
     const foodCollection = collection(this.firestore, 'food');
 
     const foodDoc = doc(foodCollection, categoryId);
@@ -55,7 +54,7 @@ export class FoodService {
       food: arrayUnion(food)
     };
 
-    return updateDoc(foodDoc, updatedFoodData);
+    return await updateDoc(foodDoc, updatedFoodData);
   }
   
 }
