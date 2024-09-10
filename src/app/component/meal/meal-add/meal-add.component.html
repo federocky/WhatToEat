@@ -1,9 +1,18 @@
-<ion-list>
-    <ion-item>
+<ion-content>
+  <ion-card>
+    <ion-img [src]="selectedImage ? selectedImage : 'assets/noimage.png'" alt="meal image"></ion-img>
+    <ion-card-header>
+      <ion-card-title>
         <ion-input aria-label="name" placeholder="Nombre" [(ngModel)]="mealName"></ion-input>
-    </ion-item>
-
-    <ion-item>
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-button expand="block" shape="round" color="primary" (click)="takePhoto()">
+        <ion-icon slot="start" name="camera-outline"></ion-icon>
+        Foto
+      </ion-button>
+      
+      <ion-item>
         <ion-label position="stacked">Alimentos Necesarios</ion-label>
         <ion-chip *ngFor="let food of neededFood" (click)="removeFood('neededFood', food)">
           {{ food }}
@@ -21,16 +30,25 @@
         <ion-input aria-label="newOptionalFood" placeholder="Añadir alimentos opcionales" [(ngModel)]="newOptionalFood" (ionChange)="addFood('optionalFood', newOptionalFood)"></ion-input>
       </ion-item>
 
+      <ion-item>
+        <ion-label>Meal Type</ion-label>
+        <ion-select placeholder="Selecciona un tipo" [(ngModel)]="mealType">
+          <ion-select-option value="any">Cualquiera</ion-select-option>
+          <ion-select-option value="lunch">Comida</ion-select-option>
+          <ion-select-option value="dinner">Cena</ion-select-option>
+        </ion-select>
+      </ion-item>
+
       <ion-item lines="none">
         <ion-label position="stacked">Receta</ion-label>
         <ion-textarea aria-label="recipe" placeholder="Receta" [(ngModel)]="recipe" style="min-height: 50vh;"></ion-textarea>
       </ion-item>
-    
+    </ion-card-content>
+  </ion-card>
 
-</ion-list>
-
-<ion-fab slot="fixed" horizontal="center" vertical="bottom">
+  <ion-fab slot="fixed" horizontal="center" vertical="bottom">
     <ion-fab-button (click)="add()">
       <ion-icon name="checkmark-outline"></ion-icon>
     </ion-fab-button>
-</ion-fab>
+  </ion-fab>
+</ion-content>

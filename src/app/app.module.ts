@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { IonicModule } from '@ionic/angular';
-import { MealComponent } from './component/meal/meal.component';
+import { MealListComponent } from './component/meal/meal-list.component';
 import { FoodComponent } from './component/food/food.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
@@ -17,19 +17,25 @@ import { environment } from 'src/environments/environment';
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { OrderByPipe } from './pipes/order-by.pipe';
-import { MealDetailComponent } from './component/shared/meal-cards/meal-detail/meal-detail.component';
+import { MealDetailComponent } from './component/meal/meal-detail/meal-detail.component';
+import { StorageModule } from '@angular/fire/storage';
+import { LineBreakPipe } from './pipes/line-break.pipe';
+import { WeeklyMenuComponent } from './component/weekly-menu/weekly-menu/weekly-menu.component';
+
 
 @NgModule({
   declarations: [
     AppComponent,
-    MealComponent,
+    MealListComponent,
     FoodComponent,
     CookedMealsComponent,
     MealCardsComponent,
     FoodAddComponent,
     MealAddComponent,
     OrderByPipe,
-    MealDetailComponent
+    MealDetailComponent,
+    LineBreakPipe,
+    WeeklyMenuComponent
   ],
   imports: [
     BrowserModule,
@@ -40,7 +46,7 @@ import { MealDetailComponent } from './component/shared/meal-cards/meal-detail/m
     IonicStorageModule.forRoot(),
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     provideFirestore(() => getFirestore()),
-    
+    StorageModule
   ],
   providers: [],
   bootstrap: [AppComponent]

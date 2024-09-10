@@ -1,14 +1,15 @@
 <ion-content>
     <!-- Imagen -->
-    <!-- <ion-img [src]="meal.imageUrl" alt="Imagen de la comida"></ion-img> -->
-  
+    <ion-img [src]="meal.imageUrl ? meal.imageUrl : 'assets/noimage.png'" alt="meal image"></ion-img>
+
     <!-- Título -->
-    <ion-title>{{ meal.name }}</ion-title>
-  
+    <ion-title style="font-weight: bold; text-align: center; margin-top: 10px;">
+      {{ meal.name }}
+    </ion-title>  
     <!-- Ingredientes necesarios -->
     <ion-card>
       <ion-card-header>
-        <ion-card-title>Ingredientes Necesarios</ion-card-title>
+        <ion-card-title >Ingredientes Necesarios</ion-card-title>
       </ion-card-header>
       <ion-card-content>
         <ion-list>
@@ -38,8 +39,8 @@
       <ion-card-header>
         <ion-card-title>Receta</ion-card-title>
       </ion-card-header>
-      <ion-card-content>
-        {{ meal.recipe }}
+      <ion-card-content class="pre-wrap-content">
+        {{ meal.recipe | lineBreak}}
       </ion-card-content>
     </ion-card>
   </ion-content>

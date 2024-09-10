@@ -1,7 +1,7 @@
 <ion-content>
 
     <ion-list>
-        <ng-container *ngFor="let category of foodList | orderBy: 'name'">      
+        <ng-container *ngFor="let category of foodCategoryList | orderBy: 'name'">      
             <ion-item-group>
                 <ion-item-divider>{{ category.name }}</ion-item-divider>
 
@@ -18,7 +18,10 @@
             <ion-icon name="add"></ion-icon>
         </ion-fab-button>
     </ion-fab>
+
 </ion-content>
-    <ion-button (click)="cook()">A cocinar</ion-button> 
+<ion-button (click)="cookMeal()">Una comida</ion-button> 
+<ion-button (click)="cookWeeklyMenu()">Menú semanal</ion-button> 
+
 
 

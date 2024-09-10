@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FoodCategory } from 'src/app/models/food';
+import { FoodCategory } from 'src/app/models/foodCategory';
 import { FoodService } from 'src/app/services/food.service';
 import { IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
@@ -21,12 +21,11 @@ export class FoodAddComponent implements OnInit {
   constructor(private _foodService: FoodService){}
 
   ngOnInit (){
-    this.getAllFood();
+    this.getAllFoodCategory();
   }
 
-  private getAllFood(){
-    this._foodService.getAllFood()
-      .subscribe( allFood => this.categoryList = allFood);
+  private async getAllFoodCategory(){
+    this.categoryList = await this._foodService.getAllFoodCategory();
   }
 
   add(){

@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { FoodComponent } from './component/food/food.component';
-import { MealComponent } from './component/meal/meal.component';
+import { MealListComponent } from './component/meal/meal-list.component';
 import { CookedMealsComponent } from './component/cooked-meals/cooked-meals.component';
 import { FoodAddComponent } from './component/food/food-add/food-add.component';
 import { MealAddComponent } from './component/meal/meal-add/meal-add.component';
-import { MealDetailComponent } from './component/shared/meal-cards/meal-detail/meal-detail.component';
+import { MealDetailComponent } from './component/meal/meal-detail/meal-detail.component';
+import { WeeklyMenuComponent } from './component/weekly-menu/weekly-menu/weekly-menu.component';
 
 const routes: Routes = [
   {
@@ -19,7 +20,7 @@ const routes: Routes = [
   },
   {
     path: 'meal',
-    component: MealComponent
+    component: MealListComponent
   },
   {
     path: 'cookead-meal',
@@ -36,6 +37,10 @@ const routes: Routes = [
   {
     path: 'meal-detail',
     component: MealDetailComponent
+  },
+  {
+    path: 'weekly-menu',
+    component: WeeklyMenuComponent
   }
   
 ];

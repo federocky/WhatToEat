@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Food, FoodCategory } from '../models/food';
-import { Firestore, collection, addDoc, collectionData, doc, deleteDoc, arrayUnion, updateDoc } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { Food} from '../models/food';
+import { Firestore, collection, addDoc, doc, arrayUnion, updateDoc } from '@angular/fire/firestore';
+import { FoodCategory } from '../models/foodCategory';
+import { FoodRepository } from '../repositories/food.repository';
 
 
 @Injectable({
@@ -9,7 +10,8 @@ import { Observable } from 'rxjs';
 })
 export class FoodService {
 
-  constructor(private firestore: Firestore) {}
+  constructor(private firestore: Firestore,
+              private foodRepository: FoodRepository) {}
 
   addCategory(categoryName: string){
     const foodRef = collection(this.firestore, 'food');
@@ -22,24 +24,27 @@ export class FoodService {
     addDoc(foodRef, foodCat);
   }
 
-  addFood(category: string, foodName: string){
+  async addFood(category: string, foodName: string){
 
-    let allFood: FoodCategory[];
+    const allFoodCategory = await this.foodRepository.getAllFoodCategory()        
 
-    this.getAllFood()
-      .subscribe((allFoodResult) => {
+    let foodCategory = allFoodCategory.find(cat => cat.name == category);
+    if(foodCategory == undefined) return;
+
+    const foodToAdd: Food = {name: foodName, selected: false};
+    
+    this.addFoodToCategory(foodCategory.id, foodToAdd);
         
-        allFood = allFoodResult;
-
-        let foodCategory = allFood.find(cat => cat.name == category);
-        if(foodCategory == undefined) return;
-
-        const foodToAdd: Food = {name: foodName, selected: false};
-        
-        this.addFoodToCategory(foodCategory.id, foodToAdd);
-        
-      });     
   }
+
+  async getAllFoodCategory(): Promise<FoodCategory[]>{
+    return await this.foodRepository.getAllFoodCategory();
+  }
+          
+  // deleteFood(foodCategoryId: number){
+  //   const foodRef = doc(this.firestore, `food/${foodCategoryId}`);
+  //   return deleteDoc(foodRef);
+  // }
 
   private addFoodToCategory(categoryId: string, food: Food): Promise<void> {
     const foodCollection = collection(this.firestore, 'food');
@@ -52,15 +57,5 @@ export class FoodService {
 
     return updateDoc(foodDoc, updatedFoodData);
   }
-  
-  getAllFood(): Observable<FoodCategory[]>{
-    const foodRef = collection(this.firestore, 'food');
-    return collectionData(foodRef, { idField: 'id' }) as Observable<FoodCategory[]>
-  }
-          
-  // deleteFood(foodCategoryId: number){
-  //   const foodRef = doc(this.firestore, `food/${foodCategoryId}`);
-  //   return deleteDoc(foodRef);
-  // }
   
 }
