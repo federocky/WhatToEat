@@ -1,4 +1,5 @@
 export interface Food {
     name: string,
-    selected: boolean
+    selected: boolean,
+    price: string
 }

@@ -6,6 +6,7 @@ import { Capacitor } from '@capacitor/core';
 import { Storage, getDownloadURL, ref, uploadBytes } from '@angular/fire/storage'
 import { MealType } from 'src/app/enums/mealType';
 import { Router } from '@angular/router';
+import { ToastService } from 'src/app/services/toast.service';
 
 
 @Component({
@@ -15,40 +16,35 @@ import { Router } from '@angular/router';
 })
 export class MealAddComponent implements OnInit {
   
-  mealName: string = '';
-  neededFood: string[] = [];
-  optionalFood: string[] = [];
+  meal: Meal = <Meal>{};
+
   newNeededFood: string = '';
   newOptionalFood: string = '';
-  recipe: string = '';
-
 
   selectedImage: any;
-  imageUrl: string = '';
-  mealType: MealType = MealType.Any;
 
   constructor(private storage: Storage,
               private _mealService: MealService,
-              private _router: Router
+              private _router: Router,
+              private _toastService: ToastService
             ){}
 
   ngOnInit(): void {
-    //Camera.requestPermissions();
+    this.initializeMeal();
   }
 
   async add(){      
-    //TODO: refactor, this can be in the class
-    const meal: Meal = {
-      id: '',
-      name: this.mealName,
-      neededFood: this.neededFood,
-      optionalFood: this.optionalFood,
-      recipe: this.recipe,
-      imageUrl: this.imageUrl,
-      mealType: this.mealType
-    }
 
-    await this._mealService.addMeal(meal);
+    
+    try {
+      await this._mealService.addMeal(this.meal);
+      await this._toastService.showSuccess();
+      this.initializeMeal();
+      
+    } catch (error) {
+      await this._toastService.showError();
+    }
+    
     this._router.navigate(['meal']);
   }
 
@@ -73,7 +69,7 @@ export class MealAddComponent implements OnInit {
 
     const blob = this.dataURLtoBlob(image.dataUrl);
     const url = await this.uploadImage(blob, image)
-    this.imageUrl = url || ''; 
+    this.meal.imageUrl = url || ''; 
 } 
 
 
@@ -106,15 +102,19 @@ export class MealAddComponent implements OnInit {
 
   addFood(type: 'neededFood' | 'optionalFood', food: string) {
     if (food.trim() !== '') {
-      this[type].push(food);
+      var foodList = type === 'neededFood' ? this.meal.neededFood : this.meal.optionalFood;
+      foodList.push(food);
       this.clearInput(type);
     }
   }
 
   removeFood(type: 'neededFood' | 'optionalFood', food: string) {
-    const index = this[type].indexOf(food);
+
+    var foodList = type === 'neededFood' ? this.meal.neededFood : this.meal.optionalFood;
+    const index = foodList.indexOf(food);
+
     if (index !== -1) {
-      this[type].splice(index, 1);
+      foodList.splice(index, 1);
     }
   }
 
@@ -124,5 +124,17 @@ export class MealAddComponent implements OnInit {
     } else {
       this.newOptionalFood = '';
     }
+  }
+
+  private initializeMeal(): void{
+    this.meal = {
+      id: '',
+      name: '',
+      neededFood: [],
+      optionalFood: [],
+      recipe: '',
+      imageUrl: '',
+      mealType: MealType.Any
+    };
   }
 }

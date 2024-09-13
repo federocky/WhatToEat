@@ -8,8 +8,11 @@
         <ion-button id="open-modal" expand="block">+</ion-button>
     </ion-item>
     <ion-item>
-        <ion-input placeholder="Nombre" [(ngModel)]="foodName"></ion-input>
+        <ion-input placeholder="Nombre" [(ngModel)]="food.name"></ion-input>
     </ion-item>
+    <ion-item>
+      <ion-input placeholder="Precio" [(ngModel)]="food.price"></ion-input>
+  </ion-item>
 </ion-list>
 <ion-fab slot="fixed" horizontal="center" vertical="bottom">
     <ion-fab-button (click)="add()">

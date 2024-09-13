@@ -24,17 +24,35 @@ export class FoodService {
     addDoc(foodRef, foodCat);
   }
 
-  async addFood(category: string, foodName: string){
+  async add(category: string, food: Food){
 
     const allFoodCategory = await this.foodRepository.getAllFoodCategory()        
 
     let foodCategory = allFoodCategory.find(cat => cat.name == category);
     if(foodCategory == undefined) return;
 
-    const foodToAdd: Food = {name: foodName, selected: false};
+    const foodToAdd: Food = {name: food.name, selected: false, price: food.price};
     
     await this.addFoodToCategory(foodCategory.id, foodToAdd);        
   }
+
+  async edit(categoryName: string, originalFoodName: string, updatedFood: Food) {
+
+    const allFoodCategories = await this.foodRepository.getAllFoodCategory();
+  
+    let foodCategory = allFoodCategories.find(cat => cat.name === categoryName);
+    if (!foodCategory) return;  
+  
+    const foodToUpdate = foodCategory.food.find(f => f.name === originalFoodName);
+    if (!foodToUpdate) return;  
+  
+    try {
+      await this.foodRepository.updateFoodInCategory(foodCategory.id, originalFoodName, updatedFood);
+    } catch (error) {
+      console.error('Error actualizando el alimento:', error);
+    }
+  }
+  
 
   async getAllFoodCategory(): Promise<FoodCategory[]>{
     return await this.foodRepository.getAllFoodCategory();

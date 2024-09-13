@@ -1,13 +1,26 @@
-<ion-content>
+<ion-toolbar>
+    <ion-button size="small" *ngIf="!isEditMode" (click)="isEditMode = true">Editar alimento</ion-button>
+    <ion-button size="small" *ngIf="isEditMode" (click)="isEditMode = false">Seleccionar</ion-button>
+  </ion-toolbar>
 
+<ion-content>
     <ion-list *ngIf="foodCategoryList.length > 0">
         <ng-container *ngFor="let category of foodCategoryList | orderBy: 'name'">      
             <ion-item-group>
                 <ion-item-divider>{{ category.name }}</ion-item-divider>
 
                     <ion-item *ngFor="let food of category.food | orderBy: 'name'">
+                        <ng-container *ngIf="isEditMode">
+                            <ion-label>{{ food.name }}</ion-label>
+                            <ion-icon 
+                                name="color-wand-outline" 
+                                (click)="openEditFoodModal(category.name, food)">
+                            </ion-icon>                            
+                        </ng-container>
+                        <ng-container *ngIf="!isEditMode">
                         <ion-checkbox [(ngModel)]="food.selected">{{ food.name }}</ion-checkbox>
-                    </ion-item>     
+                        </ng-container>
+                    </ion-item>
             </ion-item-group>
         </ng-container>
     </ion-list>
@@ -19,8 +32,20 @@
     </ion-fab>
 
 </ion-content>
-<ion-button (click)="cookMeal()">Una comida</ion-button> 
-<ion-button (click)="cookWeeklyMenu()">Menú semanal</ion-button> 
+<ion-button *ngIf="!isEditMode" (click)="cookMeal()">Una comida</ion-button> 
+<ion-button *ngIf="!isEditMode" (click)="cookWeeklyMenu()">Menú semanal</ion-button> 
 
 
 
+<ion-modal trigger="open-modal">
+     
+    <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-button >Cancelar</ion-button>
+        </ion-buttons>
+        <ion-title>Categoría</ion-title>
+        <ion-buttons slot="end">
+          <ion-button [strong]="true">Aceptar</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+</ion-modal>

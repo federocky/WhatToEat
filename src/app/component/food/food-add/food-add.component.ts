@@ -4,6 +4,8 @@ import { FoodService } from 'src/app/services/food.service';
 import { IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
 import { Router } from '@angular/router';
+import { Food } from 'src/app/models/food';
+import { ToastService } from 'src/app/services/toast.service';
 
 
 @Component({
@@ -15,12 +17,13 @@ export class FoodAddComponent implements OnInit {
   @ViewChild(IonModal) modal!: IonModal;
 
   categoryList: FoodCategory[] = [];
-  foodName: string = '';
+  food: Food = <Food>{};
   selectedCategory: string = '';
   categoryName:string = '';
 
   constructor(private _foodService: FoodService,
-              private _router: Router
+              private _router: Router,
+              private _toastService: ToastService
   ){}
 
   ngOnInit (){
@@ -32,7 +35,15 @@ export class FoodAddComponent implements OnInit {
   }
 
   async add(){
-    await this._foodService.addFood(this.selectedCategory, this.foodName);
+    try {
+      await this._foodService.add(this.selectedCategory, this.food);
+      await this._toastService.showSuccess();
+      this.clearForm();
+      
+    } catch (error) {
+      await this._toastService.showError();
+    }
+
     this._router.navigate(['food']);
   }
 
@@ -53,5 +64,11 @@ export class FoodAddComponent implements OnInit {
 
   onWillDismiss(event: Event) {
     const ev = event as CustomEvent<OverlayEventDetail<string>>;
+  }
+
+  private clearForm(){
+    this.selectedCategory = '';
+    this.food.name = '';
+    this.food.price = '';
   }
 }

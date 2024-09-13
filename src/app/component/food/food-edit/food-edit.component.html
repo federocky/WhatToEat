@@ -1,0 +1,32 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>Editar Alimento</ion-title>
+        <ion-buttons slot="end">
+        <ion-button (click)="dismiss()">Cancelar</ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+  
+<ion-content>
+    <ion-item>
+      <ion-label>Nombre: </ion-label>
+      <ion-input [(ngModel)]="food.name"></ion-input>
+    </ion-item>
+
+    <ion-item>
+        <ion-label>Precio: </ion-label>
+        <ion-input [(ngModel)]="food.price"></ion-input>
+    </ion-item>
+    
+    <ion-item>
+        <ion-label>Seleccionado: </ion-label>
+        <ion-checkbox [(ngModel)]="food.selected"></ion-checkbox>
+    </ion-item>
+</ion-content>
+
+<ion-fab slot="fixed" horizontal="center" vertical="bottom">
+    <ion-fab-button (click)="edit()">
+      <ion-icon name="checkmark-outline"></ion-icon>
+    </ion-fab-button>
+</ion-fab>
+  

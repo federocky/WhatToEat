@@ -3,7 +3,7 @@
     <ion-img [src]="selectedImage ? selectedImage : 'assets/noimage.png'" alt="meal image"></ion-img>
     <ion-card-header>
       <ion-card-title>
-        <ion-input aria-label="name" placeholder="Nombre" [(ngModel)]="mealName"></ion-input>
+        <ion-input aria-label="name" placeholder="Nombre" [(ngModel)]="meal.name"></ion-input>
       </ion-card-title>
     </ion-card-header>
     <ion-card-content>
@@ -14,7 +14,7 @@
       
       <ion-item>
         <ion-label position="stacked">Alimentos Necesarios</ion-label>
-        <ion-chip *ngFor="let food of neededFood" (click)="removeFood('neededFood', food)">
+        <ion-chip *ngFor="let food of meal.neededFood" (click)="removeFood('neededFood', food)">
           {{ food }}
           <ion-icon name="close-circle"></ion-icon>
         </ion-chip>
@@ -23,7 +23,7 @@
     
       <ion-item>
         <ion-label position="stacked">Alimentos Opcionales</ion-label>
-        <ion-chip *ngFor="let food of optionalFood" (click)="removeFood('optionalFood', food)">
+        <ion-chip *ngFor="let food of meal.optionalFood" (click)="removeFood('optionalFood', food)">
           {{ food }}
           <ion-icon name="close-circle"></ion-icon>
         </ion-chip>
@@ -32,7 +32,7 @@
 
       <ion-item>
         <ion-label>Meal Type</ion-label>
-        <ion-select placeholder="Selecciona un tipo" [(ngModel)]="mealType">
+        <ion-select placeholder="Selecciona un tipo" [(ngModel)]="meal.mealType">
           <ion-select-option value="any">Cualquiera</ion-select-option>
           <ion-select-option value="lunch">Comida</ion-select-option>
           <ion-select-option value="dinner">Cena</ion-select-option>
@@ -41,7 +41,7 @@
 
       <ion-item lines="none">
         <ion-label position="stacked">Receta</ion-label>
-        <ion-textarea aria-label="recipe" placeholder="Receta" [(ngModel)]="recipe" style="min-height: 50vh;"></ion-textarea>
+        <ion-textarea aria-label="recipe" placeholder="Receta" [(ngModel)]="meal.recipe" style="min-height: 50vh;"></ion-textarea>
       </ion-item>
     </ion-card-content>
   </ion-card>
