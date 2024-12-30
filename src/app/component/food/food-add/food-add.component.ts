@@ -6,6 +6,7 @@ import { OverlayEventDetail } from '@ionic/core/components';
 import { Router } from '@angular/router';
 import { Food } from 'src/app/models/food';
 import { ToastService } from 'src/app/services/toast.service';
+import { HeaderService } from 'src/app/services/header.service';
 
 
 @Component({
@@ -13,7 +14,7 @@ import { ToastService } from 'src/app/services/toast.service';
   templateUrl: './food-add.component.html',
   styleUrls: ['./food-add.component.scss']
 })
-export class FoodAddComponent implements OnInit {
+export class FoodAddComponent {
   @ViewChild(IonModal) modal!: IonModal;
 
   categoryList: FoodCategory[] = [];
@@ -23,18 +24,23 @@ export class FoodAddComponent implements OnInit {
 
   constructor(private _foodService: FoodService,
               private _router: Router,
-              private _toastService: ToastService
+              private _toastService: ToastService,
+              private _headerService: HeaderService
   ){}
 
-  ngOnInit (){
-    this.getAllFoodCategory();
+
+  async ionViewWillEnter(): Promise<void> {
+    this._headerService.setTitle('Agregar ingrediente');
+    this._headerService.setShowBackButton(true);
+    this._headerService.setBackButtonHref("/food");
+    await this.getAllFoodCategory();
   }
 
-  private async getAllFoodCategory(){
-    this.categoryList = await this._foodService.getAllFoodCategory();
+  private async getAllFoodCategory(): Promise<void>{
+    this.categoryList = await this._foodService.getAllCategory();
   }
 
-  async add(){
+  async add(): Promise<void>{
     try {
       await this._foodService.add(this.selectedCategory, this.food);
       await this._toastService.showSuccess();
@@ -47,26 +53,26 @@ export class FoodAddComponent implements OnInit {
     this._router.navigate(['food']);
   }
 
-  onCategoryChange(event: any) {
+  onCategoryChange(event: any): void {
     this.selectedCategory = event.detail.value;
   }
 
 
   //TODO: move modal to a component
-  onModalCancel() {
+  onModalCancel(): void {
     this.modal.dismiss(null, 'cancel');
   }
 
-  onModalConfirm() {
+  onModalConfirm(): void {
     this._foodService.addCategory(this.categoryName);
     this.modal.dismiss(null, 'confirm');
   }
 
-  onWillDismiss(event: Event) {
+  onWillDismiss(event: Event): void {
     const ev = event as CustomEvent<OverlayEventDetail<string>>;
   }
 
-  private clearForm(){
+  private clearForm(): void{
     this.selectedCategory = '';
     this.food.name = '';
     this.food.price = '';

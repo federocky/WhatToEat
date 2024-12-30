@@ -1,7 +1,7 @@
 <ion-toolbar>
     <ion-button size="small" *ngIf="!isEditMode" (click)="isEditMode = true">Editar alimento</ion-button>
     <ion-button size="small" *ngIf="isEditMode" (click)="isEditMode = false">Seleccionar</ion-button>
-  </ion-toolbar>
+</ion-toolbar>
 
 <ion-content>
     <ion-list *ngIf="foodCategoryList.length > 0">
@@ -15,8 +15,15 @@
                             <ion-icon 
                                 name="color-wand-outline" 
                                 (click)="openEditFoodModal(category.name, food)">
-                            </ion-icon>                            
+                            </ion-icon>               
+                            
+                            <ion-icon
+                                name="trash-outline" 
+                                color="danger"
+                                (click)="delete(category.id, food.name)">
+                            </ion-icon>
                         </ng-container>
+
                         <ng-container *ngIf="!isEditMode">
                         <ion-checkbox [(ngModel)]="food.selected">{{ food.name }}</ion-checkbox>
                         </ng-container>

@@ -12,11 +12,11 @@ export class MealCardsComponent {
 
   constructor(private router: Router, private _mealService: MealService) {}
 
-  seeDetail(mealId: string){
+  seeDetail(mealId: string): void{
     const meal = this.meals.find(meal => meal.id === mealId);
     if(meal === null || meal === undefined) return;
     
-    this._mealService.setMeal(meal);
+    this._mealService.setSelected(meal);
     this.router.navigate(['/meal-detail']);
   }
 }

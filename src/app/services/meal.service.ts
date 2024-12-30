@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Meal } from '../models/meal';
 import { FoodCategory } from '../models/foodCategory';
-import { Firestore, collection, addDoc } from '@angular/fire/firestore';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { MealRepository } from '../repositories/meal.repository';
 import { WeeklyMenu } from '../models/weeklyMenu';
 import { MealType } from '../enums/mealType';
+import { MealCategory } from '../enums/mealCategory';
 
 @Injectable({
   providedIn: 'root'
@@ -15,20 +15,35 @@ export class MealService {
   availableFood: string[] = [];
   private mealSubject: BehaviorSubject<Meal> = new BehaviorSubject<Meal>(<Meal>{});
 
-  constructor(private firestore: Firestore,
-              private mealRepository: MealRepository
+  constructor(
+              private _mealRepository: MealRepository
               ) { }
 
-  async addMeal(meal: Meal){
-    const mealRef = collection(this.firestore, 'meal');
-    await addDoc(mealRef, meal);
+  async add(meal: Meal): Promise<void>{
+    await this._mealRepository.add(meal);
   }
 
-  async getAllMeals(): Promise<Meal[]>{
-    return await this.mealRepository.getAllMeals()
+  get(): Observable<Meal>{
+    return this.mealSubject.asObservable();
   }
 
-  setAvailableFood(foodList: FoodCategory[]){
+  async getAll(): Promise<Meal[]>{
+    return await this._mealRepository.getAll()
+  }
+
+  async update(meal: Meal): Promise<void>{
+    await this._mealRepository.update(meal);
+  }
+
+  setSelected(meal:Meal): void{
+    this.mealSubject.next(meal);
+  }
+
+  async delete(id: string): Promise<void>{
+    await this._mealRepository.delete(id);
+  }
+
+  setAvailableFood(foodList: FoodCategory[]): void{
     this.availableFood = [];
     for (const category of foodList) {
       category.food.forEach(food => {
@@ -37,20 +52,11 @@ export class MealService {
     }
   }
 
-  setMeal(meal:Meal){
-    this.mealSubject.next(meal);
-  }
-
-  getMeal(){
-    return this.mealSubject.asObservable();
-  }
-
-
-  async cook(){
+  async cook() {
     try {
-      const allMeals = await this.mealRepository.getAllMeals()
+      const allMeals = await this._mealRepository.getAll()
 
-      const availableMeals = allMeals.filter(meal =>
+      let availableMeals = allMeals.filter(meal =>
         meal.neededFood.every(food =>
           this.availableFood.some(availableFood =>
              availableFood.toLowerCase() === food.toLowerCase()
@@ -58,7 +64,24 @@ export class MealService {
           )
       );
 
-      console.log(availableMeals)
+      const sides = availableMeals.filter(meal => meal.category == MealCategory.Side);
+      const mains = availableMeals.filter(meal => meal.category == MealCategory.Main);
+      availableMeals = availableMeals.filter(meal => meal.category == MealCategory.Full)
+
+      mains.forEach(main => {
+        sides.forEach(side => {
+          availableMeals.push({
+            id: '',
+            name: main.name + ' con ' + side.name,
+            optionalFood: main.optionalFood.concat(side.optionalFood),
+            neededFood: main.neededFood.concat(side.neededFood),
+            recipe: main.recipe + ' ' + side.recipe,
+            imageUrl: '',
+            type: main.type,
+            category: MealCategory.Full
+          })
+        })
+      })
 
       return availableMeals;
     } catch (error) {
@@ -71,8 +94,8 @@ export class MealService {
     
     const availableMeals = await this.cook();
 
-    const availableLunch = availableMeals.filter(meal => meal.mealType === MealType.Any || meal.mealType === MealType.Lunch);
-    const availableDinner = availableMeals.filter(meal => meal.mealType === MealType.Any || meal.mealType === MealType.Dinner);
+    const availableLunch = availableMeals.filter(meal => meal.type === MealType.Any || meal.type === MealType.Lunch);
+    const availableDinner = availableMeals.filter(meal => meal.type === MealType.Any || meal.type === MealType.Dinner);
 
     let weeklyMenu: WeeklyMenu = <WeeklyMenu>{};
 

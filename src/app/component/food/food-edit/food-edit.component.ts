@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Food } from 'src/app/models/food';
 import { FoodService } from 'src/app/services/food.service';
+import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
   selector: 'app-food-edit',
@@ -14,19 +15,21 @@ export class FoodEditComponent implements OnInit {
 
   originalFoodName: string = '';
 
-  constructor(private foodService: FoodService,
-    private modalController: ModalController){}
+  constructor(private _foodService: FoodService,
+    private _modalController: ModalController,
+    private _toastService: ToastService){}
 
   ngOnInit(): void {
       this.originalFoodName = this.food.name;
   }
 
-  dismiss() {
-    this.modalController.dismiss();
+  dismiss(): void {
+    this._modalController.dismiss();
   }
 
-  async edit(){
-    await this.foodService.edit(this.categoryName, this.originalFoodName,  this.food)
-    this.modalController.dismiss();
+  async edit(): Promise<void>{
+    await this._foodService.edit(this.categoryName, this.originalFoodName,  this.food);
+    await this._toastService.showSuccess();
+    this._modalController.dismiss();
   }
 }

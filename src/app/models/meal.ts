@@ -1,3 +1,4 @@
+import { MealCategory } from '../enums/mealCategory'
 import { MealType } from '../enums/mealType'
 
 export interface Meal {
@@ -7,5 +8,6 @@ export interface Meal {
     optionalFood: string[],
     recipe: string,
     imageUrl: string,
-    mealType: MealType
+    type: MealType
+    category: MealCategory
 }

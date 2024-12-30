@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
-import { filter } from 'rxjs';
+import { Router } from '@angular/router';
+import { HeaderService } from './services/header.service';
 
 @Component({
   selector: 'app-root',
@@ -8,22 +8,28 @@ import { filter } from 'rxjs';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'whatToEat';
-  showBackButton = false;
+  title: string = 'whatToEat';
+  showBackButton: boolean = false;
+  backButtonHref: string = "/";
 
-  constructor(private router: Router){
+  constructor(private router: Router,
+    private _headerService: HeaderService
+  ){
     this.initializeApp();
   }
 
-  initializeApp() {
-    this.router.events
-      .pipe(filter((event) => event instanceof NavigationEnd)) // Filtra para solo escuchar cuando la navegación ha terminado
-      .subscribe((event: any) => {
-        if (event.url === '/food-add' || event.url === '/meal-add') {
-          this.showBackButton = true;  
-        } else {
-          this.showBackButton = false;
-        }
+  initializeApp(): void {
+
+      this._headerService.currentTitle.subscribe(newTitle => {
+        this.title = newTitle;
+      });
+
+      this._headerService.currentShowBackButton.subscribe(show => {
+        this.showBackButton = show;
+      });
+
+      this._headerService.currentBackButtonHref.subscribe(href => {
+        this.backButtonHref = href;
       });
   }
 }

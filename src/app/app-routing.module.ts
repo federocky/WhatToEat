@@ -33,6 +33,10 @@ const routes: Routes = [
   {
     path: 'meal-add',
     component: MealAddComponent
+  },  
+  { 
+    path: 'meal/edit/:id', 
+    component: MealAddComponent 
   },
   {
     path: 'meal-detail',

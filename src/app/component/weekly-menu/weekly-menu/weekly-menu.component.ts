@@ -19,7 +19,6 @@ export class WeeklyMenuComponent {
     await this.loadWeeklyMenu();
   }
 
-  //TODO:falta implementar este método
   async loadWeeklyMenu(){
     this.weeklyMenu = await this._mealService.cookWeaklyMenu();
   }

@@ -22,6 +22,7 @@ import { StorageModule } from '@angular/fire/storage';
 import { LineBreakPipe } from './pipes/line-break.pipe';
 import { WeeklyMenuComponent } from './component/weekly-menu/weekly-menu/weekly-menu.component';
 import { FoodEditComponent } from './component/food/food-edit/food-edit.component';
+import { MealCategoryTranslatePipe } from './pipes/meal-category-translate.pipe';
 
 
 @NgModule({
@@ -37,7 +38,8 @@ import { FoodEditComponent } from './component/food/food-edit/food-edit.componen
     MealDetailComponent,
     LineBreakPipe,
     WeeklyMenuComponent,
-    FoodEditComponent
+    FoodEditComponent,
+    MealCategoryTranslatePipe
   ],
   imports: [
     BrowserModule,

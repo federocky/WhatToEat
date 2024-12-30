@@ -32,10 +32,19 @@
 
       <ion-item>
         <ion-label>Meal Type</ion-label>
-        <ion-select placeholder="Selecciona un tipo" [(ngModel)]="meal.mealType">
+        <ion-select placeholder="Selecciona un tipo" [(ngModel)]="meal.type">
           <ion-select-option value="any">Cualquiera</ion-select-option>
           <ion-select-option value="lunch">Comida</ion-select-option>
           <ion-select-option value="dinner">Cena</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Meal Category</ion-label>
+        <ion-select placeholder="Selecciona un tipo" [(ngModel)]="meal.category">
+          <ion-select-option value="full">Completa</ion-select-option>
+          <ion-select-option value="side">Guarnición</ion-select-option>
+          <ion-select-option value="main">Principal</ion-select-option>
         </ion-select>
       </ion-item>
 
@@ -47,7 +56,7 @@
   </ion-card>
 
   <ion-fab slot="fixed" horizontal="center" vertical="bottom">
-    <ion-fab-button (click)="add()">
+    <ion-fab-button (click)="upsert()">
       <ion-icon name="checkmark-outline"></ion-icon>
     </ion-fab-button>
   </ion-fab>
