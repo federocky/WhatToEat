@@ -8,8 +8,8 @@ import { MealType } from 'src/app/enums/mealType';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastService } from 'src/app/services/toast.service';
 import { HeaderService } from 'src/app/services/header.service';
-import { Subscription } from 'rxjs';
 import { MealCategory } from 'src/app/enums/mealCategory';
+import { FoodService } from 'src/app/services/food.service';
 
 
 @Component({
@@ -26,12 +26,16 @@ export class MealAddComponent {
 
   selectedImage: any;
 
-  isEditMode: boolean = false;  
-
-  private subscription: Subscription = new Subscription();
+  isEditMode: boolean = false; 
+  
+  allFoods: string[] = []
+  filteredFoods: string[] = [];
+  activeNeededFoodList: boolean = false;
+  activeOptionalFoodList: Boolean = false;
 
   constructor(private storage: Storage,
               private _mealService: MealService,
+              private foodService: FoodService,
               private _router: Router,
               private _toastService: ToastService,
               private _headerService: HeaderService,
@@ -41,6 +45,7 @@ export class MealAddComponent {
   async ionViewWillEnter(): Promise<void> {
     await this.initializeMeal();
     await this.checkIsEditMode();
+    await this.loadAllFoods();
     const title = this.isEditMode === true ? 'Modificar comida' : 'Agregar comida'
     this._headerService.setTitle(title);
     this._headerService.setShowBackButton(true);
@@ -80,8 +85,6 @@ export class MealAddComponent {
       source: CameraSource.Camera
     });
 
-    console.log(image);
-
     this.selectedImage = image.dataUrl;
 
     const blob = this.dataURLtoBlob(image.dataUrl);
@@ -104,7 +107,6 @@ export class MealAddComponent {
       const filePath = `image/${currentDate}.${imageData.format}`;
       const fileRef = ref(this.storage, filePath);
       const task = await uploadBytes(fileRef, blob);
-      console.log("task: ", task);
       const url = getDownloadURL(fileRef);
       return url;
     } catch (error) {
@@ -140,6 +142,32 @@ export class MealAddComponent {
     }
   }
 
+  filterFoods(event: any, foodType: string): void {
+    const foodToFind = event.target.value.toLowerCase();
+
+    this.filteredFoods = this.allFoods.filter(food => 
+      food.toLowerCase().includes(foodToFind) && !this.meal.neededFood.includes(food)
+    );
+    if(foodType === 'needed'){
+      this.activeNeededFoodList = true;
+    } else if(foodType === 'optional'){
+      this.activeOptionalFoodList = true;
+    }
+  }
+
+  selectFood(food: string, foodType: string): void {
+    if(foodType === 'needed'){
+      this.meal.neededFood.push(food);
+      this.newNeededFood = '';
+      this.activeNeededFoodList = false;
+    } else if( foodType === 'optional'){
+      this.meal.optionalFood.push(food);
+      this.newOptionalFood = '';
+      this.activeOptionalFoodList = false;
+    }
+    this.filteredFoods = [];
+  }
+
   private initializeMeal(): void{
     this.meal = {
       id: '',
@@ -166,8 +194,17 @@ export class MealAddComponent {
   }
 
   private async loadMeal(id: string): Promise<void>{
-    this.subscription = this._mealService.get().subscribe(meal => {
-      this.meal = meal;
-    });    
+    this._mealService.get().subscribe(meal => {
+        this.meal = meal;
+      });    
+  }
+
+  private async loadAllFoods(): Promise<void>{
+    const allFoodCategory = await this.foodService.getAllCategory();
+    for (const foodCategory of allFoodCategory) {
+      const foodNames = foodCategory.food.map(food => food.name);
+      this.allFoods.push(...foodNames);
+    }
+    
   }
 }

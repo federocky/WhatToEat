@@ -41,18 +41,3 @@
 </ion-content>
 <ion-button *ngIf="!isEditMode" (click)="cookMeal()">Una comida</ion-button> 
 <ion-button *ngIf="!isEditMode" (click)="cookWeeklyMenu()">Menú semanal</ion-button> 
-
-
-
-<ion-modal trigger="open-modal">
-     
-    <ion-toolbar>
-        <ion-buttons slot="start">
-          <ion-button >Cancelar</ion-button>
-        </ion-buttons>
-        <ion-title>Categoría</ion-title>
-        <ion-buttons slot="end">
-          <ion-button [strong]="true">Aceptar</ion-button>
-        </ion-buttons>
-      </ion-toolbar>
-</ion-modal>

@@ -7,7 +7,6 @@ import { MealCategory } from '../enums/mealCategory';
 export class MealCategoryTranslatePipe implements PipeTransform {
 
   transform(value: MealCategory): string {
-    console.log(value)
     switch (value) {
       case MealCategory.Full:
         return 'Completa';

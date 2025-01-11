@@ -27,7 +27,6 @@ export class MealDetailComponent implements OnInit {
   ngOnInit(): void {
     this.subscription = this._mealService.get().subscribe(meal => {
       this.meal = meal;
-      console.log(this.meal)
     });  
   }
 

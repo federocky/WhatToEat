@@ -1,53 +1,87 @@
 <ion-content>
   <ion-card>
     <ion-img [src]="selectedImage ? selectedImage : 'assets/noimage.png'" alt="meal image"></ion-img>
+    
     <ion-card-header>
       <ion-card-title>
         <ion-input aria-label="name" placeholder="Nombre" [(ngModel)]="meal.name"></ion-input>
       </ion-card-title>
     </ion-card-header>
+
     <ion-card-content>
       <ion-button expand="block" shape="round" color="primary" (click)="takePhoto()">
         <ion-icon slot="start" name="camera-outline"></ion-icon>
         Foto
       </ion-button>
       
+      <!-- ALIMENTOS NECESARIOS -->
       <ion-item>
         <ion-label position="stacked">Alimentos Necesarios</ion-label>
         <ion-chip *ngFor="let food of meal.neededFood" (click)="removeFood('neededFood', food)">
           {{ food }}
           <ion-icon name="close-circle"></ion-icon>
         </ion-chip>
-        <ion-input aria-label="newNeededFood" placeholder="Añadir alimentos necesarios" [(ngModel)]="newNeededFood" (ionChange)="addFood('neededFood', newNeededFood)"></ion-input>
+        <ion-input 
+          aria-label="newNeededFood" 
+          placeholder="Añadir alimentos necesarios" 
+          [(ngModel)]="newNeededFood" 
+          (ionInput)="filterFoods($event, 'needed')">
+        </ion-input>
+
+      <ion-list *ngIf="filteredFoods.length > 0 && activeNeededFoodList" class="suggestions-list">
+        <ion-item 
+          *ngFor="let food of filteredFoods" 
+          (click)="selectFood(food, 'needed')">
+          {{ food }}
+        </ion-item>
+      </ion-list>
       </ion-item>
     
+      <!-- ALIMENTOS OPCIONALES -->
       <ion-item>
         <ion-label position="stacked">Alimentos Opcionales</ion-label>
         <ion-chip *ngFor="let food of meal.optionalFood" (click)="removeFood('optionalFood', food)">
           {{ food }}
           <ion-icon name="close-circle"></ion-icon>
         </ion-chip>
-        <ion-input aria-label="newOptionalFood" placeholder="Añadir alimentos opcionales" [(ngModel)]="newOptionalFood" (ionChange)="addFood('optionalFood', newOptionalFood)"></ion-input>
+
+        <ion-input 
+          aria-label="newOptionalFood" 
+          placeholder="Añadir alimentos opcionales" 
+          [(ngModel)]="newOptionalFood" 
+          (ionInput)="filterFoods($event,'optional')">
+        </ion-input>
+
+        <ion-list *ngIf="filteredFoods.length > 0 && activeOptionalFoodList" class="suggestions-list">
+          <ion-item 
+            *ngFor="let food of filteredFoods" 
+            (click)="selectFood(food, 'optional')">
+            {{ food }}
+          </ion-item>
+        </ion-list>
       </ion-item>
 
+      <!-- MEAL TYPE -->
       <ion-item>
         <ion-label>Meal Type</ion-label>
-        <ion-select placeholder="Selecciona un tipo" [(ngModel)]="meal.type">
+        <ion-select placeholder="Selecciona un tipo" [(ngModel)]="meal.type" label="Meal Type">
           <ion-select-option value="any">Cualquiera</ion-select-option>
           <ion-select-option value="lunch">Comida</ion-select-option>
           <ion-select-option value="dinner">Cena</ion-select-option>
         </ion-select>
       </ion-item>
 
+      <!-- MEAL CATEGORY -->
       <ion-item>
         <ion-label>Meal Category</ion-label>
-        <ion-select placeholder="Selecciona un tipo" [(ngModel)]="meal.category">
+        <ion-select placeholder="Selecciona un tipo" [(ngModel)]="meal.category" label="Meal Category">
           <ion-select-option value="full">Completa</ion-select-option>
           <ion-select-option value="side">Guarnición</ion-select-option>
           <ion-select-option value="main">Principal</ion-select-option>
         </ion-select>
       </ion-item>
 
+      <!-- RECETA -->
       <ion-item lines="none">
         <ion-label position="stacked">Receta</ion-label>
         <ion-textarea aria-label="recipe" placeholder="Receta" [(ngModel)]="meal.recipe" style="min-height: 50vh;"></ion-textarea>
