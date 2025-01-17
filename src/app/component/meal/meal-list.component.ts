@@ -12,6 +12,7 @@ export class MealListComponent{
 
   meals: Meal[] = [];
   filteredMeals: Meal[] = [];
+  mealsToShow: Meal[] = [];
 
   constructor(private _mealService: MealService,
               private _router: Router,
@@ -29,7 +30,8 @@ export class MealListComponent{
   private async getAllMeals(): Promise<void>{
     const allMeals = await this._mealService.getAll()
       this.meals = allMeals;
-      this.filteredMeals = allMeals
+      this.filteredMeals = allMeals;
+      this.mealsToShow = allMeals;
   }
 
   add(): void{
@@ -39,12 +41,24 @@ export class MealListComponent{
   onSearch(event: any): void {
     const searchText = event.detail.value.toLowerCase();
     if (!searchText) {
-      this.filteredMeals = this.meals;
+      this.mealsToShow = this.filteredMeals;
       return;
     }
 
-    this.filteredMeals = this.meals.filter(meal =>
+    this.mealsToShow = this.filteredMeals.filter(meal =>
       meal.name.toLowerCase().includes(searchText)
     );
   }
+
+  onCategoryChange(event: any): void {
+    const selectedCategory = event.detail.value;
+
+    if(selectedCategory === 'all'){
+      this.filteredMeals = [...this.meals];
+    } else{
+      this.filteredMeals = this.meals.filter(meal => meal.category.toLowerCase() == selectedCategory);
+    }
+    this.mealsToShow = this.filteredMeals;
+  }
+
 }

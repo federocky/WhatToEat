@@ -1,7 +1,18 @@
 <ion-content>
+
+    <ion-item>
+      <ion-select (ionChange)="onCategoryChange($event)" value="all">
+        <ion-select-option value="all">Todas</ion-select-option>
+        <ion-select-option value="full">Completas</ion-select-option>
+        <ion-select-option value="side">Guarniciones</ion-select-option>
+        <ion-select-option value="main">Principales</ion-select-option>
+      </ion-select>
+    </ion-item>    
+  
+
   <ion-searchbar (ionInput)="onSearch($event)"></ion-searchbar>
 
-  <app-meal-cards [meals]="filteredMeals"></app-meal-cards>
+  <app-meal-cards [meals]="mealsToShow"></app-meal-cards>
 
   <ion-fab slot="fixed" horizontal="center" vertical="bottom">
     <ion-fab-button (click)="add()">
